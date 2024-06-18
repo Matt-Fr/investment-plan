@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
+import { InvestmentResultsComponent } from './investment-results/investment-results.component';
 
 interface AnnualData {
   year: number;
@@ -15,18 +16,32 @@ interface AnnualData {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FormsModule, HeaderComponent],
+  imports: [
+    RouterOutlet,
+    FormsModule,
+    HeaderComponent,
+    InvestmentResultsComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
 export class AppComponent {
+  resultsData?: {
+    year: number;
+    interest: number;
+    valueEndOfYear: number;
+    annualInvestment: number;
+    totalInterest: number;
+    totalAmountInvested: number;
+  }[];
+
   initialInvestment = 0;
   annualInvestment = 0;
   expectedReturn = 0;
   duration = 0;
   annualData: AnnualData[] = [];
 
-  onSubmit() {
+  onCalculateResults() {
     let investmentValue = this.initialInvestment;
 
     for (let i = 0; i < this.duration; i++) {
@@ -46,6 +61,6 @@ export class AppComponent {
           this.initialInvestment + this.annualInvestment * year,
       });
     }
-    console.log(this.annualData);
+    this.resultsData = this.annualData;
   }
 }

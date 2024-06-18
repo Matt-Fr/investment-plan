@@ -1,6 +1,6 @@
 <main class="m-4">
   <app-header></app-header>
-  <form (ngSubmit)="onSubmit()">
+  <form (ngSubmit)="onCalculateResults()">
     <div>
       <label class="mr-2" for="initialInvestment">Initial Investment</label>
       <input
@@ -44,16 +44,7 @@
     </p>
   </form>
 
-  @for (oneYearData of annualData; track $index) {
-  <article class="bg-green-300">
-    <p>{{ oneYearData.year }}</p>
-    <p>Interest Earned: {{ oneYearData.interest }}</p>
-    <p>Value at End of Year: {{ oneYearData.valueEndOfYear }}</p>
-    <p>Annual Investment: {{ oneYearData.annualInvestment }}</p>
-    <p>Total Interest: {{ oneYearData.totalInterest }}</p>
-    <p>Total Amount Invested: {{ oneYearData.totalAmountInvested }}</p>
-  </article>
-  }
+  <app-investment-results [results]="resultsData"></app-investment-results>
 </main>
 
 <router-outlet />
