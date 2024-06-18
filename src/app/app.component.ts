@@ -36,6 +36,8 @@ export class AppComponent {
     expectedReturn: number;
     annualInvestment: number;
   }) {
+    const { initialInvestment, duration, expectedReturn, annualInvestment } =
+      data;
     let investmentValue = initialInvestment;
     const annualData = [];
     for (let i = 0; i < duration; i++) {
