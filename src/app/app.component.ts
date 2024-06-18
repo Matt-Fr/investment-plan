@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
 import { InvestmentResultsComponent } from './investment-results/investment-results.component';
+import { UserInputComponent } from './user-input/user-input.component';
 
 interface AnnualData {
   year: number;
@@ -21,46 +22,38 @@ interface AnnualData {
     FormsModule,
     HeaderComponent,
     InvestmentResultsComponent,
+    UserInputComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
 export class AppComponent {
-  resultsData?: {
-    year: number;
-    interest: number;
-    valueEndOfYear: number;
+  resultsData = signal<AnnualData[] | undefined>(undefined);
+
+  onCalculateResults(data: {
+    initialInvestment: number;
+    duration: number;
+    expectedReturn: number;
     annualInvestment: number;
-    totalInterest: number;
-    totalAmountInvested: number;
-  }[];
-
-  initialInvestment = 0;
-  annualInvestment = 0;
-  expectedReturn = 0;
-  duration = 0;
-  annualData: AnnualData[] = [];
-
-  onCalculateResults() {
-    let investmentValue = this.initialInvestment;
-
-    for (let i = 0; i < this.duration; i++) {
+  }) {
+    let investmentValue = initialInvestment;
+    const annualData = [];
+    for (let i = 0; i < duration; i++) {
       const year = i + 1;
-      const interestEarnedInYear =
-        investmentValue * (this.expectedReturn / 100);
-      investmentValue += interestEarnedInYear + this.annualInvestment;
+      const interestEarnedInYear = investmentValue * (expectedReturn / 100);
+      investmentValue += interestEarnedInYear + annualInvestment;
       const totalInterest =
-        investmentValue - this.annualInvestment * year - this.initialInvestment;
-      this.annualData.push({
+        investmentValue - annualInvestment * year - initialInvestment;
+      annualData.push({
         year: year,
         interest: interestEarnedInYear,
         valueEndOfYear: investmentValue,
-        annualInvestment: this.annualInvestment,
+        annualInvestment: annualInvestment,
         totalInterest: totalInterest,
-        totalAmountInvested:
-          this.initialInvestment + this.annualInvestment * year,
+        totalAmountInvested: initialInvestment + annualInvestment * year,
       });
     }
-    this.resultsData = this.annualData;
+    this.resultsData.set(annualData);
+    console.log(annualData);
   }
 }
