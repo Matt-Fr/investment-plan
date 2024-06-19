@@ -1,8 +1,7 @@
 <main class="m-4">
   <app-header></app-header>
-
-  <app-user-input (calculate)="onCalculateResults($event)" />
-  <app-investment-results [results]="resultsData()"></app-investment-results>
+  <app-user-input />
+  <app-investment-results></app-investment-results>
 </main>
 
 <router-outlet />
